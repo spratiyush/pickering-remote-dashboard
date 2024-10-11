@@ -15,18 +15,9 @@ st.set_page_config(
 # -----------------------------------------------------------------------------
 # Draw the actual page
 
-# Set the title that appears at the top of the page.
-'''
-# 🚰 Atlas Dashboard
-Welcome to your Atlas Dashboard from the Pickering Lab! 
-
-Monitor real-time chlorine residual levels, ORP, pH, and temperature directly from your Atlas Device. 
-
-Our dashboard provides predictive insights, historical trends, and sends timely alerts to ensure optimal water quality and safety. 
-'''
-
-# Add some spacing
-''
+# Display in Streamlit
+st.title("🚰 Atlas Dashboard")
+st.markdown("Welcome to your Atlas Dashboard from the Pickering Lab! Monitor real-time chlorine residual levels, ORP, pH, and temperature directly from your Atlas Device. Our dashboard provides predictive insights, historical trends, and sends timely alerts to ensure optimal water quality and safety.")
 
 # Create dummy data
 np.random.seed(42)
@@ -50,10 +41,6 @@ safe_threshold = 0.2  # Safe chlorine level threshold (mg/L)
 # Determine status for the current chlorine level
 status_local = "Safe" if current_local_chlorine >= safe_threshold else "Unsafe"
 status_regional = "Safe" if current_regional_chlorine >= safe_threshold else "Unsafe"
-
-# Display in Streamlit
-st.title("Chlorine Level Dashboard")
-st.markdown("This dashboard displays the chlorine status and trends for both local and regional levels.")
 
 # Current Chlorine Status
 st.subheader("Current Chlorine Status")
