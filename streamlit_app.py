@@ -9,7 +9,7 @@ from pathlib import Path
 # Set the title and favicon that appear in the Browser's tab bar.
 st.set_page_config(
     page_title='Water Quality Dashboard - Pickering Lab',
-    page_icon=':earth_americas:', # This is an emoji shortcode. Could be a URL too.
+    page_icon=':earth_americas:', 
 )
 
 # -----------------------------------------------------------------------------
@@ -17,7 +17,7 @@ st.set_page_config(
 
 # Display in Streamlit
 st.title("🚰 Atlas Dashboard")
-st.markdown("Welcome to your Atlas Dashboard from the Pickering Lab! Monitor real-time chlorine residual levels, ORP, pH, and temperature directly from your Atlas Device. Our dashboard provides predictive insights, historical trends, and sends timely alerts to ensure optimal water quality and safety.")
+st.markdown("Welcome to your Atlas Dashboard from the *Pickering Lab*! Monitor real-time chlorine residual levels, ORP, pH, and temperature directly from your Atlas Device.")
 
 # Create dummy data
 np.random.seed(42)
@@ -42,17 +42,26 @@ safe_threshold = 0.2  # Safe chlorine level threshold (mg/L)
 status_local = "Safe" if current_local_chlorine >= safe_threshold else "Unsafe"
 status_regional = "Safe" if current_regional_chlorine >= safe_threshold else "Unsafe"
 
+# Define a function to display colored status
+def display_status(status):
+    color = "green" if status == "Safe" else "red"
+    st.markdown(f"<span style='color:{color}; font-size:24px;'>{status}</span>", unsafe_allow_html=True)
+
 # Current Chlorine Status
 st.subheader("Current Chlorine Status")
 option = st.selectbox('Select level to display', ['Local', 'Regional'])
 
 if option == 'Local':
-    st.metric("Local Chlorine Level", f"{current_local_chlorine:.2f} mg/L", status_local)
+    # st.markdown(status_local)
+    display_status(status_local)
+    # st.metric("Local Chlorine Level", f"{current_local_chlorine:.2f} mg/L", status_local)
 else:
-    st.metric("Regional Chlorine Level", f"{current_regional_chlorine:.2f} mg/L", status_regional)
+    display_status(status_regional)
+    # st.markdown(status_regional)
+    # st.metric("Regional Chlorine Level", f"{current_regional_chlorine:.2f} mg/L", status_regional)
 
 # Create a plot for the last 7 days trend
-st.subheader("Chlorine Levels Trend - Last 7 Days")
+st.subheader("Weekly Trend")
 plt.figure(figsize=(10, 5))
 plt.plot(data['Date'], data['Local Chlorine Level (mg/L)'], marker='o', label='Local')
 plt.plot(data['Date'], data['Regional Chlorine Level (mg/L)'], marker='o', linestyle='--', label='Regional')
