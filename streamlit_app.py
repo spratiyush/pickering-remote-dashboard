@@ -64,9 +64,12 @@ gdp_df = get_gdp_data()
 
 # Set the title that appears at the top of the page.
 '''
-# 🚰 Water Quality Dashboard - Pickering Lab
+# 🚰 Atlas Dashboard - 
 
-Welcome to your Atlas Dashboard! Monitor real-time chlorine residual levels, ORP, pH, and temperature directly from your Atlas Device. 
+Welcome to your Atlas Dashboard from the Pickering Lab! 
+
+Monitor real-time chlorine residual levels, ORP, pH, and temperature directly from your Atlas Device. 
+
 Our dashboard provides predictive insights, historical trends, and sends timely alerts to ensure optimal water quality and safety. 
 '''
 
