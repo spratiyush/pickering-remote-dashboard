@@ -64,9 +64,10 @@ gdp_df = get_gdp_data()
 
 # Set the title that appears at the top of the page.
 '''
-# :earth_americas: GDP dashboard
+# 🚰 Water Quality Dashboard - Pickering Lab
 
-Monitor real-time chlorine residual levels, ORP, pH, and temperature directly from your Wi-Fi Pool Kit. View predictive insights, track historical trends, and receive timely alerts to ensure optimal water quality and safety. Access your data anytime, anywhere, through our easy-to-use platform.
+Welcome to your Atlas Dashboard! Monitor real-time chlorine residual levels, ORP, pH, and temperature directly from your Atlas Device. 
+Our dashboard provides predictive insights, historical trends, and sends timely alerts to ensure optimal water quality and safety. 
 '''
 
 # Add some spacing
