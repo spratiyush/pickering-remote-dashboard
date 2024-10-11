@@ -53,12 +53,14 @@ option = st.selectbox('Select level to display', ['Local', 'Regional'])
 
 if option == 'Local':
     # st.markdown(status_local)
+    
+    st.metric("Local Chlorine Level", f"{current_local_chlorine:.2f} mg/L")
     display_status(status_local)
-    # st.metric("Local Chlorine Level", f"{current_local_chlorine:.2f} mg/L", status_local)
 else:
+    st.metric("Regional Chlorine Level", f"{current_regional_chlorine:.2f} mg/L")
     display_status(status_regional)
     # st.markdown(status_regional)
-    # st.metric("Regional Chlorine Level", f"{current_regional_chlorine:.2f} mg/L", status_regional)
+    
 
 # Create a plot for the last 7 days trend
 st.subheader("Weekly Trend")
