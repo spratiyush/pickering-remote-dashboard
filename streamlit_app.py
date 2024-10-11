@@ -8,8 +8,8 @@ from pathlib import Path
 
 # Set the title and favicon that appear in the Browser's tab bar.
 st.set_page_config(
-    page_title='Water Quality Dashboard - Pickering Lab',
-    page_icon=':earth_americas:', 
+    page_title='Atlas Dashboard',
+    page_icon='🚰', 
 )
 
 # -----------------------------------------------------------------------------
