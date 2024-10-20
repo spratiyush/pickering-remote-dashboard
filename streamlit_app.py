@@ -65,6 +65,12 @@ if feeds and channel_info:
     # Display charts for each sensor field
     sensor_fields = [col for col in df.columns if col.startswith("field")]
     for field in sensor_fields:
+        if field == "field1":
+            field = "pH"
+        elif field == "field2":
+            field = "ORP"
+        else:
+            field = "Temperature (C)"
         st.subheader(f"{field} Over Time")
         st.line_chart(df[['created_at', field]].set_index('created_at'))
 else:
