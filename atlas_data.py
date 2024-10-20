@@ -3,9 +3,9 @@ import pandas as pd
 import requests
 from datetime import datetime
 
-# Set up your ThingSpeak API details
-CHANNEL_ID = 'YOUR_CHANNEL_ID'  
-READ_API_KEY = 'YOUR_READ_API_KEY'  
+# ThingSpeak API details
+CHANNEL_ID = '2659578'  
+READ_API_KEY = 'RZ5A2FF8B3GZIQWQ'  
 NUM_RESULTS = 100  
 
 def fetch_thingspeak_data(channel_id, read_api_key, num_results):
