@@ -83,13 +83,40 @@ if feeds and channel_info:
         df['log_FCR'] = df.apply(lambda row: van_haute_model(row['ORP (mV)'], row['pH']), axis=1)
         df['FCR'] = 10 ** df['log_FCR']  # Convert log(FCR) to FCR
         
-        # Display the raw data
-        st.subheader("Raw Data")
-        st.dataframe(df)
+        # User Role Selection
+        user_role = st.selectbox("Select Your Role", ["Community Member", "Technician", "Researcher"])
         
-        # Plot FCR over time
-        st.subheader("FCR Over Time")
-        st.line_chart(df[['created_at', 'FCR']].set_index('created_at'))
+        # Define Safe Threshold
+        safe_threshold = 0.2
+        
+        # Display for Community Member
+        if user_role == "Community Member":
+            last_fcr = df['FCR (mg/L)'].iloc[-1]
+            if last_fcr > safe_threshold:
+                st.markdown(f"<span style='color:green; font-size:24px;'>Safe</span>", unsafe_allow_html=True)
+            else:
+                st.markdown(f"<span style='color:red; font-size:24px;'>Unsafe</span>", unsafe_allow_html=True)
+        
+        # Display for Technician
+        elif user_role == "Technician":
+            last_fcr = df['FCR (mg/L)'].iloc[-1]
+            st.subheader("Current Chlorine Status")
+            color = "green" if last_fcr > safe_threshold else "red"
+            st.markdown(f"<span style='color:{color}; font-size:24px;'>{last_fcr:.2f} mg/L</span>", unsafe_allow_html=True)
+            
+            # Trend of FCR over time
+            st.subheader("FCR Over Time")
+            st.line_chart(df[['created_at', 'FCR (mg/L)']].set_index('created_at'))
+        
+        # Display for Researcher
+        elif user_role == "Researcher":
+            # Display raw FCR data
+            st.subheader("Raw FCR Data")
+            st.dataframe(df[['created_at', 'FCR (mg/L)']])
+            
+            # Trend of FCR over time
+            st.subheader("FCR Over Time")
+            st.line_chart(df[['created_at', 'FCR (mg/L)']].set_index('created_at'))
     else:
         st.error("The dataset does not contain ORP and pH readings required for FCR calculation.")
 else:
