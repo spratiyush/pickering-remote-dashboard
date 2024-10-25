@@ -80,9 +80,9 @@ if feeds and channel_info:
     st.write(f"these are the df columns: {df.columns}")
     
     # Check for the presence of ORP and pH columns in the data
-    if 'ORP' in df.columns and 'pH' in df.columns:
+    if 'ORP (mV)' in df.columns and 'pH' in df.columns:
         # Calculate FCR using Van Haute's Model
-        df['log_FCR'] = df.apply(lambda row: van_haute_model(row['ORP'], row['pH']), axis=1)
+        df['log_FCR'] = df.apply(lambda row: van_haute_model(row['ORP (mV)'], row['pH']), axis=1)
         df['FCR'] = 10 ** df['log_FCR']  # Convert log(FCR) to FCR
         
         # Display the raw data
