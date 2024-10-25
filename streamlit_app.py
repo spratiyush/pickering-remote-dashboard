@@ -71,13 +71,11 @@ feeds, channel_info = fetch_thingspeak_data(CHANNEL_ID, READ_API_KEY, NUM_RESULT
 
 if feeds and channel_info:
     df = process_data(feeds, channel_info)
-    st.write(f"This is data from ThingSpeak Channel: {channel_info['name']}")
+    # Remove and simplify columns
+    df = df.drop(columns=['entry_id', 'field1', 'field2', 'field3'])
+    df['created_at'] = df['created_at'].dt.strftime('%Y-%m-%d %H:%M')
 
-    # Display the raw data
-    st.subheader("Raw Data")
-    st.dataframe(df)
-
-    st.write(f"these are the df columns: {df.columns}")
+    st.write(f"FCR data from ThingSpeak Channel: {channel_info['name']}")
     
     # Check for the presence of ORP and pH columns in the data
     if 'ORP (mV)' in df.columns and 'pH' in df.columns:
