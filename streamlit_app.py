@@ -97,13 +97,14 @@ if feeds and channel_info:
         st.markdown("Tell Us About Yourself:")
         user_role = st.selectbox("", ["Select Your Role", "Community Member", "Technician", "Researcher"])
         
-        # Define Safe Threshold
-        safe_threshold = 0.2
+        # Define Safe Thresholds
+        safe_threshold_low = 0.2
+        safe_threshold_high = 1.0
         
         # Display for Community Member
         if user_role == "Community Member":
             last_fcr = df['FCR (mg/L)'].iloc[-1]
-            if last_fcr > safe_threshold:
+            if last_fcr > safe_threshold_low and last_fcr < safe_threshold_high:
                 # st.markdown(f"<span style='color:green; font-size:24px;'>Safe</span>", unsafe_allow_html=True)
                 # Add Safe Water image to top center and subtitle underneath
                 st.image("safe_water.png", caption="Water is Safe", use_column_width=True)
