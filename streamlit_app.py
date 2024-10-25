@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import math
 from pathlib import Path
 import requests
+import base64
 
 # Set the title and favicon that appear in the Browser's tab bar.
 st.set_page_config(
@@ -60,14 +61,25 @@ def van_haute_model(orp, ph):
     
     return log_fcr
 
+
+# Function to get base64 of the image
+def get_base64_of_bin_file(bin_file):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+# Path to the logo image
+safe_water_path = "/workspaces/pickering-remote-dashboard/images/safe_water.png"
+unsafe_water_path = "/workspaces/pickering-remote-dashboard/images/unsafe_water.png"
+safe_logo_base64 = get_base64_of_bin_file(safe_water_path)
+unsafe_logo_base64 = get_base64_of_bin_file(unsafe_water_path)
+
 # Display in Streamlit
 st.title("🚰 Atlas Dashboard")
 st.markdown("Welcome to your Atlas Dashboard from the *Pickering Lab*! Monitor real-time chlorine residual levels, ORP, pH, and temperature directly from your Atlas Device.")
 
 # Fetch and process data
 feeds, channel_info = fetch_thingspeak_data(CHANNEL_ID, READ_API_KEY, NUM_RESULTS)
-
-
 
 if feeds and channel_info:
     df = process_data(feeds, channel_info)
@@ -93,10 +105,21 @@ if feeds and channel_info:
             last_fcr = df['FCR (mg/L)'].iloc[-1]
             if last_fcr > safe_threshold:
                 # st.markdown(f"<span style='color:green; font-size:24px;'>Safe</span>", unsafe_allow_html=True)
-                st.image("/workspaces/pickering-remote-dashboard/images/safe_water.png", caption="Water is Safe", use_column_width=True)
+                # Add Safe Water image to top center and subtitle underneath
+                st.markdown(f"""
+                    <div style="text-align: center;">
+                        <img src="data:image/png;base64,{safe_water_path}" alt="CMA Logo" style="width: 200px; margin-bottom: 10px;">
+                        <h3 style="margin-top: 0;">Water is Safe</h3>
+                    </div>
+                """, unsafe_allow_html=True)
             else:
                 # st.markdown(f"<span style='color:red; font-size:24px;'>Unsafe</span>", unsafe_allow_html=True)
-                st.image("/workspaces/pickering-remote-dashboard/images/unsafe_water.png", caption="Water is Unsafe", use_column_width=True)
+                st.markdown(f"""
+                    <div style="text-align: center;">
+                        <img src="data:image/png;base64,{unsafe_water_path}" alt="CMA Logo" style="width: 200px; margin-bottom: 10px;">
+                        <h3 style="margin-top: 0;">Water is Unafe</h3>
+                    </div>
+                """, unsafe_allow_html=True)
         
         # Display for Technician
         elif user_role == "Technician":
