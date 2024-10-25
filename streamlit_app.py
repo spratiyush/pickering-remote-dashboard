@@ -106,20 +106,11 @@ if feeds and channel_info:
             if last_fcr > safe_threshold:
                 # st.markdown(f"<span style='color:green; font-size:24px;'>Safe</span>", unsafe_allow_html=True)
                 # Add Safe Water image to top center and subtitle underneath
-                st.markdown(f"""
-                    <div style="text-align: center;">
-                        <img src="data:image/png;base64,{safe_water_path}" alt="CMA Logo" style="width: 200px; margin-bottom: 10px;">
-                        <h3 style="margin-top: 0;">Water is Safe</h3>
-                    </div>
-                """, unsafe_allow_html=True)
+                st.image("safe_water.png", caption="Water is Safe", use_column_width=True)
+                
             else:
                 # st.markdown(f"<span style='color:red; font-size:24px;'>Unsafe</span>", unsafe_allow_html=True)
-                st.markdown(f"""
-                    <div style="text-align: center;">
-                        <img src="data:image/png;base64,{unsafe_water_path}" alt="CMA Logo" style="width: 200px; margin-bottom: 10px;">
-                        <h3 style="margin-top: 0;">Water is Unafe</h3>
-                    </div>
-                """, unsafe_allow_html=True)
+                st.image("unsafe_water.png", caption="Water is Unsafe", use_column_width=True)
         
         # Display for Technician
         elif user_role == "Technician":
