@@ -83,7 +83,7 @@ if feeds and channel_info:
         
         # User Role Selection
         st.markdown("Tell Us About You:")
-        user_role = st.selectbox(["Select Your Role", "Community Member", "Technician", "Researcher"])
+        user_role = st.selectbox("", ["Select Your Role", "Community Member", "Technician", "Researcher"])
         
         # Define Safe Threshold
         safe_threshold = 0.2
