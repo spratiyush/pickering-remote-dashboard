@@ -47,6 +47,19 @@ def process_data(feeds, channel_info):
     
     return df
 
+def van_haute_model(orp, ph):
+    intercept = 0.44
+    orp_coeff = -0.015
+    orp_squared_coeff = 1.1e-5
+    interaction_coeff = 8.4e-4
+    
+    log_fcr = (intercept 
+               + orp_coeff * orp 
+               + orp_squared_coeff * (orp ** 2) 
+               + interaction_coeff * (orp * ph))
+    
+    return log_fcr
+
 # Display in Streamlit
 st.title("🚰 Atlas Dashboard")
 st.markdown("Welcome to your Atlas Dashboard from the *Pickering Lab*! Monitor real-time chlorine residual levels, ORP, pH, and temperature directly from your Atlas Device.")
@@ -54,19 +67,33 @@ st.markdown("Welcome to your Atlas Dashboard from the *Pickering Lab*! Monitor r
 # Fetch and process data
 feeds, channel_info = fetch_thingspeak_data(CHANNEL_ID, READ_API_KEY, NUM_RESULTS)
 
+
+
 if feeds and channel_info:
     df = process_data(feeds, channel_info)
     st.write(f"This is data from ThingSpeak Channel: {channel_info['name']}")
-    
+
     # Display the raw data
     st.subheader("Raw Data")
     st.dataframe(df)
 
-    # Display charts for each sensor field
-    sensor_fields = [col for col in df.columns if col.startswith("field")]
-    for field in sensor_fields:
-        st.subheader(f"{field} Over Time")
-        st.line_chart(df[['created_at', field]].set_index('created_at'))
+    st.write(f"these are the df columns: {df.columns}")
+    
+    # Check for the presence of ORP and pH columns in the data
+    if 'ORP' in df.columns and 'pH' in df.columns:
+        # Calculate FCR using Van Haute's Model
+        df['log_FCR'] = df.apply(lambda row: van_haute_model(row['ORP'], row['pH']), axis=1)
+        df['FCR'] = 10 ** df['log_FCR']  # Convert log(FCR) to FCR
+        
+        # Display the raw data
+        st.subheader("Raw Data")
+        st.dataframe(df)
+        
+        # Plot FCR over time
+        st.subheader("FCR Over Time")
+        st.line_chart(df[['created_at', 'FCR']].set_index('created_at'))
+    else:
+        st.error("The dataset does not contain ORP and pH readings required for FCR calculation.")
 else:
     st.error("Failed to load data from ThingSpeak.")
 
