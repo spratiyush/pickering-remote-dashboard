@@ -16,8 +16,8 @@ st.set_page_config(
 # -----------------------------------------------------------------------------
 
 # ThingSpeak API details
-CHANNEL_ID = '2659578'  
-READ_API_KEY = 'RZ5A2FF8B3GZIQWQ'  
+CHANNEL_ID = st.secrets["api_keys"]["channel_id"]
+READ_API_KEY = st.secrets["api_keys"]["read_api_key"]
 NUM_RESULTS = 100  
 
 def fetch_thingspeak_data(channel_id, read_api_key, num_results):
