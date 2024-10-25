@@ -82,7 +82,8 @@ if feeds and channel_info:
         df['FCR (mg/L)'] = 10 ** df['log_FCR']  # Convert log(FCR) to FCR
         
         # User Role Selection
-        user_role = st.selectbox("Tell us about you:", ["Select Your Role", "Community Member", "Technician", "Researcher"])
+        st.markdown("Tell Us About You:")
+        user_role = st.selectbox(["Select Your Role", "Community Member", "Technician", "Researcher"])
         
         # Define Safe Threshold
         safe_threshold = 0.2
