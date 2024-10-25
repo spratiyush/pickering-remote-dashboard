@@ -111,10 +111,10 @@ if feeds and channel_info:
             st.write(f"FCR data from ThingSpeak Channel: {channel_info['name']}")
             # Display raw FCR data
             st.subheader("Raw FCR Data")
-            st.dataframe(df[['created_at', 'FCR (mg/L)']])
+            st.dataframe(df)
             
             # Trend of FCR over time
-            st.subheader("FCR Trend 1 Month")
+            st.subheader("FCR Trend This Month")
             st.line_chart(df[['created_at', 'FCR (mg/L)']].set_index('created_at'))
     else:
         st.error("The dataset does not contain ORP and pH readings required for FCR calculation.")
