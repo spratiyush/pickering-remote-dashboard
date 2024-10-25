@@ -81,7 +81,7 @@ if feeds and channel_info:
     if 'ORP (mV)' in df.columns and 'pH' in df.columns:
         # Calculate FCR using Van Haute's Model
         df['log_FCR'] = df.apply(lambda row: van_haute_model(row['ORP (mV)'], row['pH']), axis=1)
-        df['FCR'] = 10 ** df['log_FCR']  # Convert log(FCR) to FCR
+        df['FCR (mg/L)'] = 10 ** df['log_FCR']  # Convert log(FCR) to FCR
         
         # User Role Selection
         user_role = st.selectbox("Select Your Role", ["Community Member", "Technician", "Researcher"])
