@@ -69,8 +69,8 @@ def get_base64_of_bin_file(bin_file):
     return base64.b64encode(data).decode()
 
 # Path to the logo image
-safe_water_path = "/workspaces/pickering-remote-dashboard/images/safe_water.png"
-unsafe_water_path = "/workspaces/pickering-remote-dashboard/images/unsafe_water.png"
+safe_water_path = "safe_water.png"
+unsafe_water_path = "unsafe_water.png"
 safe_logo_base64 = get_base64_of_bin_file(safe_water_path)
 unsafe_logo_base64 = get_base64_of_bin_file(unsafe_water_path)
 
