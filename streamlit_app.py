@@ -105,7 +105,7 @@ if feeds and channel_info:
             
             # Trend of FCR over time
             st.subheader("FCR Trend Today")
-            st.line_chart(df[['created_at', 'FCR (mg/L)']].set_index('created_at'))
+            st.line_chart(df[['created_at', 'FCR (mg/L)']].set_index('created_at')[-10:])
         
         # Display for Researcher
         elif user_role == "Researcher":
