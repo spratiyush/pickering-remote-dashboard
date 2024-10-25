@@ -92,9 +92,11 @@ if feeds and channel_info:
         if user_role == "Community Member":
             last_fcr = df['FCR (mg/L)'].iloc[-1]
             if last_fcr > safe_threshold:
-                st.markdown(f"<span style='color:green; font-size:24px;'>Safe</span>", unsafe_allow_html=True)
+                # st.markdown(f"<span style='color:green; font-size:24px;'>Safe</span>", unsafe_allow_html=True)
+                st.image("/workspaces/pickering-remote-dashboard/images/safe_water.png", caption="Water is Safe", use_column_width=True)
             else:
-                st.markdown(f"<span style='color:red; font-size:24px;'>Unsafe</span>", unsafe_allow_html=True)
+                # st.markdown(f"<span style='color:red; font-size:24px;'>Unsafe</span>", unsafe_allow_html=True)
+                st.image("/workspaces/pickering-remote-dashboard/images/unsafe_water.png", caption="Water is Unsafe", use_column_width=True)
         
         # Display for Technician
         elif user_role == "Technician":
