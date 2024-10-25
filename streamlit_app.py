@@ -74,8 +74,6 @@ if feeds and channel_info:
     # Remove and simplify columns
     df = df.drop(columns=['entry_id', 'field1', 'field2', 'field3'])
     df['created_at'] = df['created_at'].dt.strftime('%Y-%m-%d %H:%M')
-
-    st.write(f"FCR data from ThingSpeak Channel: {channel_info['name']}")
     
     # Check for the presence of ORP and pH columns in the data
     if 'ORP (mV)' in df.columns and 'pH' in df.columns:
@@ -110,6 +108,7 @@ if feeds and channel_info:
         
         # Display for Researcher
         elif user_role == "Researcher":
+            st.write(f"FCR data from ThingSpeak Channel: {channel_info['name']}")
             # Display raw FCR data
             st.subheader("Raw FCR Data")
             st.dataframe(df[['created_at', 'FCR (mg/L)']])
