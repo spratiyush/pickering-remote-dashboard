@@ -84,7 +84,7 @@ if feeds and channel_info:
         df['FCR (mg/L)'] = 10 ** df['log_FCR']  # Convert log(FCR) to FCR
         
         # User Role Selection
-        user_role = st.selectbox("Select Your Role", ["Community Member", "Technician", "Researcher"])
+        user_role = st.selectbox("Tell us about you:", ["Select Your Role", "Community Member", "Technician", "Researcher"])
         
         # Define Safe Threshold
         safe_threshold = 0.2
@@ -105,7 +105,7 @@ if feeds and channel_info:
             st.markdown(f"<span style='color:{color}; font-size:24px;'>{last_fcr:.2f} mg/L</span>", unsafe_allow_html=True)
             
             # Trend of FCR over time
-            st.subheader("FCR Over Time")
+            st.subheader("FCR Trend Today")
             st.line_chart(df[['created_at', 'FCR (mg/L)']].set_index('created_at'))
         
         # Display for Researcher
@@ -115,7 +115,7 @@ if feeds and channel_info:
             st.dataframe(df[['created_at', 'FCR (mg/L)']])
             
             # Trend of FCR over time
-            st.subheader("FCR Over Time")
+            st.subheader("FCR Trend 1 Month")
             st.line_chart(df[['created_at', 'FCR (mg/L)']].set_index('created_at'))
     else:
         st.error("The dataset does not contain ORP and pH readings required for FCR calculation.")
