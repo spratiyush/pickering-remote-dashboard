@@ -117,7 +117,7 @@ if feeds and channel_info:
         elif user_role == "Technician":
             last_fcr = df['FCR (mg/L)'].iloc[-1]
             st.subheader("Current Chlorine Status")
-            color = "green" if last_fcr > safe_threshold else "red"
+            color = "green" if last_fcr > safe_threshold_low and last_fcr < safe_threshold_high else "red"
             st.markdown(f"<span style='color:{color}; font-size:24px;'>{last_fcr:.2f} mg/L</span>", unsafe_allow_html=True)
             
             # Trend of FCR over time
