@@ -1,3 +1,145 @@
+# import pandas as pd
+# import streamlit as st
+# import matplotlib.pyplot as plt
+# import numpy as np
+# from datetime import datetime, timedelta
+# import math
+# from pathlib import Path
+# import requests
+# import base64
+
+# # Streamlit Page Configuration
+# st.set_page_config(
+#     page_title='Atlas Dashboard',
+#     page_icon='🚰', 
+# )
+
+# # -----------------------------------------------------------------------------
+# # ThingSpeak API details
+# CHANNEL_ID = st.secrets["api_keys"]["channel_id"]
+# READ_API_KEY = st.secrets["api_keys"]["read_api_key"]
+# NUM_RESULTS = 100  
+
+# # Fetch data from ThingSpeak
+# def fetch_thingspeak_data(channel_id, read_api_key, num_results):
+#     url = f"https://api.thingspeak.com/channels/{channel_id}/feeds.json"
+#     params = {
+#         'api_key': read_api_key,
+#         'results': num_results
+#     }
+#     response = requests.get(url, params=params)
+#     if response.status_code == 200:
+#         data = response.json()
+#         return data['feeds'], data['channel']
+#     else:
+#         st.error("Error fetching data from ThingSpeak")
+#         return None, None
+
+# # Process data
+# def process_data(feeds, channel_info):
+#     df = pd.DataFrame(feeds)
+#     df['created_at'] = pd.to_datetime(df['created_at'])
+#     for field_key in channel_info.keys():
+#         if field_key.startswith("field"):
+#             field_name = channel_info[field_key]
+#             df[field_name] = pd.to_numeric(df[field_key], errors='coerce')
+#     return df
+
+# # Van Haute's Model
+# def van_haute_model(orp, ph):
+#     intercept = 0.44
+#     orp_coeff = -0.015
+#     orp_squared_coeff = 1.1e-5
+#     interaction_coeff = 8.4e-4
+#     log_fcr = (intercept 
+#                + orp_coeff * orp 
+#                + orp_squared_coeff * (orp ** 2) 
+#                + interaction_coeff * (orp * ph))
+#     return log_fcr
+
+# # Base64 Encoding for Images
+# def get_base64_of_bin_file(bin_file):
+#     with open(bin_file, 'rb') as f:
+#         data = f.read()
+#     return base64.b64encode(data).decode()
+
+# # Paths for images
+# safe_water_path = "safe_water.png"
+# unsafe_water_path = "unsafe_water.png"
+
+# # Display the app title and description
+# st.title("🚰 Atlas Dashboard")
+# st.markdown("Welcome to your Atlas Dashboard from the *Pickering Lab*! Monitor real-time chlorine residual levels, ORP, pH, and temperature directly from your Atlas Device.")
+
+# # Fetch and process data
+# feeds, channel_info = fetch_thingspeak_data(CHANNEL_ID, READ_API_KEY, NUM_RESULTS)
+
+# if feeds and channel_info:
+#     df = process_data(feeds, channel_info)
+#     df = df.drop(columns=['entry_id', 'field1', 'field2', 'field3'])
+#     df['created_at'] = df['created_at'].dt.strftime('%Y-%m-%d %H:%M')
+
+#     if 'ORP (mV)' in df.columns and 'pH' in df.columns:
+#         df['log_FCR'] = df.apply(lambda row: van_haute_model(row['ORP (mV)'], row['pH']), axis=1)
+#         df['FCR (mg/L)'] = 10 ** df['log_FCR']
+        
+#         # User Role Selection
+#         st.markdown("Tell Us About Yourself:")
+#         user_role = st.selectbox("", ["Select Your Role", "Community Member", "Technician", "Researcher", "NGO/Government"])
+
+#         # Safe Thresholds
+#         safe_threshold_low = 0.2
+#         safe_threshold_high = 0.8
+
+#         if user_role == "NGO/Government":
+#             st.title("NGO/Government Dashboard")
+            
+#             # Local/Regional dropdown
+#             view_option = st.selectbox("Select View", ["Local", "Regional"])
+
+#             # Metrics Section
+#             current_fcr = df["FCR (mg/L)"].iloc[-1]
+#             daily_avg = df["FCR (mg/L)"].iloc[-24:].mean()
+#             weekly_avg = df["FCR (mg/L)"].iloc[-168:].mean()
+
+#             col1, col2, col3 = st.columns(3)
+#             col1.metric("Current FCR Level (mg/L)", f"{current_fcr:.2f}")
+#             col2.metric("Daily FCR Average (mg/L)", f"{daily_avg:.2f}")
+#             col3.metric("Weekly FCR Average (mg/L)", f"{weekly_avg:.2f}")
+
+#             # Time Series Graph with Thresholds
+#             st.subheader("FCR Time Series with Thresholds")
+#             time_window = st.slider("Select Time Window (Hours)", 1, 100, 24)
+#             filtered_df = df.tail(time_window)
+
+#             plt.figure(figsize=(10, 5))
+#             plt.plot(filtered_df["created_at"], filtered_df["FCR (mg/L)"], label="FCR", color="blue")
+#             plt.axhline(y=0.2, color="red", linestyle="--", label="Min Threshold (0.2 mg/L)")
+#             plt.axhline(y=0.8, color="red", linestyle="--", label="Max Threshold (0.8 mg/L)")
+#             plt.xlabel("Timestamp")
+#             plt.ylabel("FCR (mg/L)")
+#             plt.title("FCR Over Time")
+#             plt.legend()
+#             st.pyplot(plt)
+
+#             # Additional Metrics
+#             no_chlorine_count = (filtered_df["FCR (mg/L)"] < 0.2).sum()
+#             detectable_chlorine_count = (filtered_df["FCR (mg/L)"] >= 0.2).sum()
+#             no_chlorine_proportion = no_chlorine_count / len(filtered_df)
+
+#             st.subheader("Chlorine Metrics")
+#             col4, col5, col6 = st.columns(3)
+#             col4.metric("No Chlorine Detected", no_chlorine_count)
+#             col5.metric("Proportion of No Chlorine", f"{no_chlorine_proportion:.2%}")
+#             col6.metric("Detectable Chlorine Count", detectable_chlorine_count)
+
+
+
+
+
+
+
+#### original Code ### 
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
@@ -95,7 +237,7 @@ if feeds and channel_info:
         
         # User Role Selection
         st.markdown("Tell Us About Yourself:")
-        user_role = st.selectbox("", ["Select Your Role", "Community Member", "Technician", "Researcher"])
+        user_role = st.selectbox("", ["Select Your Role", "Community Member", "Technician", "Researcher", "NGO/Government"])
         
         # Define Safe Thresholds
         safe_threshold_low = 0.2
@@ -134,73 +276,50 @@ if feeds and channel_info:
             # Trend of FCR over time
             st.subheader("FCR Trend This Month")
             st.line_chart(df[['created_at', 'FCR (mg/L)']].set_index('created_at'))
+        
+        elif user_role == "NGO/Government":
+            # st.title("NGO/Government Dashboard")
+            
+            # Local/Regional dropdown
+            view_option = st.selectbox("Select View", ["Local", "Regional"])
+
+            # Metrics Section
+            current_fcr = df["FCR (mg/L)"].iloc[-1]
+            daily_avg = df["FCR (mg/L)"].iloc[-24:].mean()
+            weekly_avg = df["FCR (mg/L)"].iloc[-168:].mean()
+
+            col1, col2, col3 = st.columns(3)
+            col1.metric("Current FCR Level (mg/L)", f"{current_fcr:.2f}")
+            col2.metric("Daily FCR Average (mg/L)", f"{daily_avg:.2f}")
+            col3.metric("Weekly FCR Average (mg/L)", f"{weekly_avg:.2f}")
+
+            # Time Series Graph with Thresholds
+            st.subheader("FCR Time Series with Thresholds")
+            time_window = st.slider("Select Time Window (Hours)", 1, 100, 24)
+            filtered_df = df.tail(time_window)
+
+            plt.figure(figsize=(10, 5))
+            plt.plot(filtered_df["created_at"], filtered_df["FCR (mg/L)"], label="FCR", color="blue")
+            plt.axhline(y=0.2, color="red", linestyle="--", label="Min Threshold (0.2 mg/L)")
+            plt.axhline(y=0.8, color="red", linestyle="--", label="Max Threshold (0.8 mg/L)")
+            plt.xlabel("Timestamp")
+            plt.ylabel("FCR (mg/L)")
+            plt.title("FCR Over Time")
+            plt.legend()
+            st.pyplot(plt)
+
+            # Additional Metrics
+            no_chlorine_count = (filtered_df["FCR (mg/L)"] < 0.2).sum()
+            detectable_chlorine_count = (filtered_df["FCR (mg/L)"] >= 0.2).sum()
+            no_chlorine_proportion = no_chlorine_count / len(filtered_df)
+
+            st.subheader("Chlorine Metrics")
+            col4, col5, col6 = st.columns(3)
+            col4.metric("No Chlorine Detected", no_chlorine_count)
+            col5.metric("Proportion of No Chlorine", f"{no_chlorine_proportion:.2%}")
+            col6.metric("Detectable Chlorine Count", detectable_chlorine_count)
     else:
         st.error("The dataset does not contain ORP and pH readings required for FCR calculation.")
 else:
     st.error("Failed to load data from ThingSpeak.")
 
-
-# =========== DUMMY CODE AND DATA BELOW ==================
-
-# # Create dummy data
-# np.random.seed(42)
-# num_days = 7
-# dates = [datetime.now() - timedelta(days=i) for i in range(num_days)][::-1]
-# chlorine_levels_local = np.random.uniform(0.1, 0.8, size=num_days)  # Local chlorine levels (mg/L)
-# chlorine_levels_regional = np.random.uniform(0.15, 0.9, size=num_days)  # Regional chlorine levels (mg/L)
-
-# # Create a DataFrame with dummy data
-# data = pd.DataFrame({
-#     'Date': dates,
-#     'Local Chlorine Level (mg/L)': chlorine_levels_local,
-#     'Regional Chlorine Level (mg/L)': chlorine_levels_regional
-# })
-
-# # Current chlorine status
-# current_local_chlorine = chlorine_levels_local[-1]
-# current_regional_chlorine = chlorine_levels_regional[-1]
-# safe_threshold = 0.2  # Safe chlorine level threshold (mg/L)
-
-# # Determine status for the current chlorine level
-# status_local = "Safe" if current_local_chlorine >= safe_threshold else "Unsafe"
-# status_regional = "Safe" if current_regional_chlorine >= safe_threshold else "Unsafe"
-
-# # Define a function to display colored status
-# def display_status(status):
-#     color = "green" if status == "Safe" else "red"
-#     st.markdown(f"<span style='color:{color}; font-size:24px;'>{status}</span>", unsafe_allow_html=True)
-
-# # Current Chlorine Status
-# st.subheader("Current Chlorine Status")
-# option = st.selectbox('Select level to display', ['Local', 'Regional'])
-
-# if option == 'Local':
-#     # st.markdown(status_local)
-    
-#     st.metric("Local Chlorine Level", f"{current_local_chlorine:.2f} mg/L")
-#     display_status(status_local)
-# else:
-#     st.metric("Regional Chlorine Level", f"{current_regional_chlorine:.2f} mg/L")
-#     display_status(status_regional)
-#     # st.markdown(status_regional)
-    
-
-# # Create a plot for the last 7 days trend
-# st.subheader("Weekly Trend")
-# plt.figure(figsize=(10, 5))
-# plt.plot(data['Date'], data['Local Chlorine Level (mg/L)'], marker='o', label='Local')
-# plt.plot(data['Date'], data['Regional Chlorine Level (mg/L)'], marker='o', linestyle='--', label='Regional')
-# plt.axhline(y=safe_threshold, color='gray', linestyle='--', label='Safe Threshold (0.2 mg/L)')
-# plt.xlabel('Date')
-# plt.ylabel('Chlorine Level (mg/L)')
-# plt.title('Chlorine Levels Over the Last 7 Days')
-# plt.xticks(rotation=45)
-# plt.legend()
-# plt.tight_layout()
-
-# # Display the plot in Streamlit
-# st.pyplot(plt)
-
-# # Show data as a table for reference
-# st.subheader("Chlorine Data")
-# st.dataframe(data)
