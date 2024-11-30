@@ -293,31 +293,38 @@ if feeds and channel_info:
             col2.metric("Daily FCR Average (mg/L)", f"{daily_avg:.2f}")
             col3.metric("Weekly FCR Average (mg/L)", f"{weekly_avg:.2f}")
 
-            # Time Series Graph with Thresholds
-            st.subheader("FCR Time Series with Thresholds")
-            time_window = st.slider("Select Time Window (Hours)", 1, 100, 24)
-            filtered_df = df.tail(time_window)
+            # Time Series Graph with Arbitrary Timestamp Selection
+            # Ensure unique and sorted timestamps
+            timestamp_options = df["created_at"].unique()
 
+            # Safely calculate indices
+            latest_time_index = len(timestamp_options) - 1  # Last timestamp index
+            fiftieth_prior_index = max(0, latest_time_index - 50)  # 50th prior index, or 0 if not enough data
+
+            # Ensure indices are within bounds of timestamp_options
+            start_index = min(fiftieth_prior_index, len(timestamp_options) - 1)
+            end_index = min(latest_time_index, len(timestamp_options) - 1)
+
+            # Dropdowns for timestamp selection
+            start_time = st.selectbox("Start Time", options=timestamp_options, index=start_index)
+            end_time = st.selectbox("End Time", options=timestamp_options, index=end_index)
+
+
+            # Filter the DataFrame based on the selected timestamps
+            filtered_df = df[(df["created_at"] >= start_time) & (df["created_at"] <= end_time)]
+
+            # Plot the filtered data
             plt.figure(figsize=(10, 5))
             plt.plot(filtered_df["created_at"], filtered_df["FCR (mg/L)"], label="FCR", color="blue")
             plt.axhline(y=0.2, color="red", linestyle="--", label="Min Threshold (0.2 mg/L)")
             plt.axhline(y=0.8, color="red", linestyle="--", label="Max Threshold (0.8 mg/L)")
             plt.xlabel("Timestamp")
             plt.ylabel("FCR (mg/L)")
-            plt.title("FCR Over Time")
+            plt.title("FCR Over Selected Time Range")
+            plt.xticks(rotation=45, fontsize=8)  # Truncate timestamps for readability
             plt.legend()
             st.pyplot(plt)
 
-            # Additional Metrics
-            no_chlorine_count = (filtered_df["FCR (mg/L)"] < 0.2).sum()
-            detectable_chlorine_count = (filtered_df["FCR (mg/L)"] >= 0.2).sum()
-            no_chlorine_proportion = no_chlorine_count / len(filtered_df)
-
-            st.subheader("Chlorine Metrics")
-            col4, col5, col6 = st.columns(3)
-            col4.metric("No Chlorine Detected", no_chlorine_count)
-            col5.metric("Proportion of No Chlorine", f"{no_chlorine_proportion:.2%}")
-            col6.metric("Detectable Chlorine Count", detectable_chlorine_count)
     else:
         st.error("The dataset does not contain ORP and pH readings required for FCR calculation.")
 else:
