@@ -5,10 +5,7 @@
 
 #### original Code ### 
 from joblib import dump, load
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import matthews_corrcoef, mean_absolute_error, mean_squared_error, r2_score
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+import sklearn
 
 import pandas as pd
 import streamlit as st
