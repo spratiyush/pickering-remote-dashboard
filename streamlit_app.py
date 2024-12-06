@@ -76,7 +76,7 @@ def get_base64_of_bin_file(bin_file):
 
 # Path to the logo image
 safe_water_path = "safe_water.png"
-unsafe_water_path = "unsafe_water.png"
+unsafe_water_path = "replaceimage.png"
 safe_logo_base64 = get_base64_of_bin_file(safe_water_path)
 unsafe_logo_base64 = get_base64_of_bin_file(unsafe_water_path)
 
@@ -196,7 +196,7 @@ if feeds and channel_info:
             
             # st.subheader("Chlorine Metrics")
             col4, col5= st.columns(2)
-            col4.metric("No Chlorine Detected", no_chlorine_count)
+            col4.metric("No. Chlorine Detected", no_chlorine_count)
             col5.metric("Proportion of No Chlorine", f"{no_chlorine_proportion:.2%}")
 
     else:
