@@ -117,7 +117,7 @@ if feeds and channel_info:
                 
             else:
                 # st.markdown(f"<span style='color:red; font-size:24px;'>Unsafe</span>", unsafe_allow_html=True)
-                st.image("unsafe_water.png", caption="Water is Unsafe", use_column_width=True)
+                st.image("replaceimage.png", caption="Water is Unsafe", use_column_width=True)
         
         # Display for Technician
         elif user_role == "Technician":
