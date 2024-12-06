@@ -4,6 +4,7 @@
 
 
 #### original Code ### 
+from joblib import dump, load
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
@@ -21,6 +22,10 @@ st.set_page_config(
 )
 
 # -----------------------------------------------------------------------------
+
+
+loaded_model = load('random_forest_model.joblib')
+loaded_scaler = load('scaler.joblib')
 
 # ThingSpeak API details
 CHANNEL_ID = st.secrets["api_keys"]["channel_id"]
@@ -95,9 +100,22 @@ if feeds and channel_info:
     
     # Check for the presence of ORP and pH columns in the data
     if 'ORP (mV)' in df.columns and 'pH' in df.columns:
+        X = df[['ORP (mV)', 'pH']]  # Select features needed for the model
+        scaled_data = loaded_scaler.transform(X) 
+        
+        # Make predictions using the loaded model
+        predictions = loaded_model.predict(scaled_data)
+        
+        # Add predictions to the DataFrame
+        df['FCR_predictions'] = predictions
+
+        # Display the DataFrame or save it for further use
+        print(df)
+        
+        
         # Calculate FCR using Van Haute's Model
-        df['log_FCR'] = df.apply(lambda row: van_haute_model(row['ORP (mV)'], row['pH']), axis=1)
-        df['FCR (mg/L)'] = 10 ** df['log_FCR']  # Convert log(FCR) to FCR
+        # df['log_FCR'] = df.apply(lambda row: van_haute_model(row['ORP (mV)'], row['pH']), axis=1)
+        # df['FCR (mg/L)'] = 10 ** df['log_FCR']  # Convert log(FCR) to FCR
         
         # User Role Selection
         st.markdown("Tell Us About Yourself:")
@@ -197,7 +215,7 @@ if feeds and channel_info:
             # st.subheader("Chlorine Metrics")
             col4, col5= st.columns(2)
             col4.metric("No. Chlorine Detected", no_chlorine_count)
-            col5.metric("Proportion of No Chlorine", f"{no_chlorine_proportion:.2%}")
+            col5.metric("Proportion of 0 Chlorine", f"{no_chlorine_proportion:.2%}")
 
     else:
         st.error("The dataset does not contain ORP and pH readings required for FCR calculation.")
