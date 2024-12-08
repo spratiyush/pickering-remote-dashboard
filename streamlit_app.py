@@ -1,8 +1,3 @@
-
-
-
-
-
 #### original Code ### 
 from joblib import dump, load
 import sklearn
@@ -26,8 +21,9 @@ st.set_page_config(
 # -----------------------------------------------------------------------------
 
 
-loaded_model = load('random_forest_model.joblib')
-loaded_scaler = load('scaler.joblib')
+
+loaded_model = load('model_content/random_forest_model.joblib')
+loaded_scaler = load('model_content/scaler.joblib')
 
 # ThingSpeak API details
 CHANNEL_ID = st.secrets["api_keys"]["channel_id"]
