@@ -172,10 +172,26 @@ if feeds and channel_info:
             daily_avg = df["FCR (mg/L)"].iloc[-24:].mean()
             weekly_avg = df["FCR (mg/L)"].iloc[-168:].mean()
 
+            # col1, col2, col3 = st.columns(3)
+            # col1.metric("Current FCR Level (mg/L)", f"{current_fcr:.2f}")
+            # col2.metric("Daily FCR Average (mg/L)", f"{daily_avg:.2f}")
+            # col3.metric("Weekly FCR Average (mg/L)", f"{weekly_avg:.2f}")
+
+            # Function to style the value
+            def format_value(value):
+                color = "red" if value < 0.2 else "black"
+                return f'<span style="color: {color};">{value:.2f}</span>'
+
+            # Display metrics with styled values
             col1, col2, col3 = st.columns(3)
-            col1.metric("Current FCR Level (mg/L)", f"{current_fcr:.2f}")
-            col2.metric("Daily FCR Average (mg/L)", f"{daily_avg:.2f}")
-            col3.metric("Weekly FCR Average (mg/L)", f"{weekly_avg:.2f}")
+            col1.metric("Current FCR Level (mg/L)", "", delta=None, delta_color="normal")
+            col1.markdown(format_value(current_fcr), unsafe_allow_html=True)
+
+            col2.metric("Daily FCR Average (mg/L)", "", delta=None, delta_color="normal")
+            col2.markdown(format_value(daily_avg), unsafe_allow_html=True)
+
+            col3.metric("Weekly FCR Average (mg/L)", "", delta=None, delta_color="normal")
+            col3.markdown(format_value(weekly_avg), unsafe_allow_html=True)
 
             # Time Series Graph with Arbitrary Timestamp Selection
             # Ensure unique and sorted timestamps
