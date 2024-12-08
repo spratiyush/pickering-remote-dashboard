@@ -101,8 +101,8 @@ if feeds and channel_info:
     df['created_at'] = df['created_at'].dt.strftime('%Y-%m-%d %H:%M')
     
     # Check for the presence of ORP and pH columns in the data
-    if 'ORP(mV)' in df.columns and 'pH' in df.columns:
-        X = df[['ORP(mV)', 'pH']]  
+    if 'ORP (mV)' in df.columns and 'pH' in df.columns:
+        X = df[['ORP (mV)', 'pH']]  
         scaled_data = loaded_scaler.transform(X) 
         
         # Make predictions using the loaded model
