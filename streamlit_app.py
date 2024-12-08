@@ -24,6 +24,7 @@ st.set_page_config(
 
 loaded_model = load('model_content/random_forest_model.joblib')
 loaded_scaler = load('model_content/scaler.joblib')
+training_df = pd.read_csv('model_content/RedRock_comprehensive_mgL.csv')
 
 # ThingSpeak API details
 CHANNEL_ID = st.secrets["api_keys"]["channel_id"]
@@ -92,6 +93,9 @@ feeds, channel_info = fetch_thingspeak_data(CHANNEL_ID, READ_API_KEY, NUM_RESULT
 
 if feeds and channel_info:
     df = process_data(feeds, channel_info)
+    print('these are df columns:', df.columns)
+    print('these are trained_df columns:', training_df.columns)
+
     # Remove and simplify columns
     df = df.drop(columns=['entry_id', 'field1', 'field2', 'field3'])
     df['created_at'] = df['created_at'].dt.strftime('%Y-%m-%d %H:%M')
@@ -105,9 +109,9 @@ if feeds and channel_info:
         predictions = loaded_model.predict(scaled_data)
         
         # Add predictions to the DataFrame
-        df['FCR_predictions'] = predictions
+        df['FCR (mg/L)'] = predictions
 
-        # Display the DataFrame or save it for further use
+        # Display the DataFrame
         print(df)
         
         
