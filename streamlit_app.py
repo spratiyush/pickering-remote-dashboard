@@ -101,8 +101,8 @@ if feeds and channel_info:
     df['created_at'] = df['created_at'].dt.strftime('%Y-%m-%d %H:%M')
     
     # Check for the presence of ORP and pH columns in the data
-    if 'ORP (mV)' in df.columns and 'pH' in df.columns:
-        X = df[['ORP (mV)', 'pH']]  # Select features needed for the model
+    if 'ORP(mV)' in df.columns and 'pH' in df.columns:
+        X = df[['ORP(mV)', 'pH']]  
         scaled_data = loaded_scaler.transform(X) 
         
         # Make predictions using the loaded model
@@ -217,7 +217,7 @@ if feeds and channel_info:
             # st.subheader("Chlorine Metrics")
             col4, col5= st.columns(2)
             col4.metric("No. Chlorine Detected", no_chlorine_count)
-            col5.metric("Proportion of 0 Chlorine", f"{no_chlorine_proportion:.2%}")
+            col5.metric("Proportion of Cases with 0 Chlorine", f"{no_chlorine_proportion:.2%}")
 
     else:
         st.error("The dataset does not contain ORP and pH readings required for FCR calculation.")
