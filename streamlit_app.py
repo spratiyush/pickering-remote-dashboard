@@ -216,8 +216,8 @@ if feeds and channel_info:
             # Plot the filtered data
             plt.figure(figsize=(10, 5))
             plt.plot(filtered_df["created_at"], filtered_df["FCR (mg/L)"], label="FCR", color="blue")
-            plt.axhline(y=0.2, color="red", linestyle="--", label="Min Threshold (0.2 mg/L)")
-            plt.axhline(y=0.8, color="red", linestyle="--", label="Max Threshold (0.8 mg/L)")
+            # plt.axhline(y=0.2, color="red", linestyle="--", label="Min Threshold (0.2 mg/L)")
+            # plt.axhline(y=0.8, color="red", linestyle="--", label="Max Threshold (0.8 mg/L)")
             plt.xlabel("Timestamp")
             plt.ylabel("FCR (mg/L)")
             plt.title("FCR Over Selected Time Range")
