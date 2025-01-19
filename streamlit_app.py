@@ -22,9 +22,9 @@ st.set_page_config(
 
 
 
-loaded_model = load('/workspaces/pickering-remote-dashboard/model_content/turitap_flow_random_forest_model.joblib')
-loaded_scaler = load('/workspaces/pickering-remote-dashboard/model_content/turitap_flow_scaler.joblib')
-training_df = pd.read_csv('/workspaces/pickering-remote-dashboard/model_content/TuriTapFlow_Data_for_FR_Modeling.xlsx - 1_.25_.4_1.65_2.1_3.8_.7_.1_.18.csv')
+loaded_model = load('model_content/turitap_flow_random_forest_model.joblib')
+loaded_scaler = load('model_content/turitap_flow_scaler.joblib')
+training_df = pd.read_csv('model_content/TuriTapFlow_Data_for_FR_Modeling.xlsx - 1_.25_.4_1.65_2.1_3.8_.7_.1_.18.csv')
 
 # ThingSpeak API details
 CHANNEL_ID = st.secrets["api_keys"]["channel_id"]
