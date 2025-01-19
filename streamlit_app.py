@@ -22,9 +22,9 @@ st.set_page_config(
 
 
 
-loaded_model = load('model_content/random_forest_model.joblib')
-loaded_scaler = load('model_content/scaler.joblib')
-training_df = pd.read_csv('model_content/RedRock_comprehensive_mgL.csv')
+loaded_model = load('model_content/turitap_flow_random_forest_model.joblib')
+loaded_scaler = load('model_content/turitap_flow_scaler.joblib')
+training_df = pd.read_csv('/workspaces/pickering-remote-dashboard/model_content/TuriTapFlow_Data_for_FR_Modeling.xlsx - 1_.25_.4_1.65_2.1_3.8_.7_.1_.18.csv')
 
 # ThingSpeak API details
 CHANNEL_ID = st.secrets["api_keys"]["channel_id"]
@@ -121,26 +121,27 @@ if feeds and channel_info:
         
         # User Role Selection
         st.markdown("Tell Us About Yourself:")
-        user_role = st.selectbox("", ["Select Your Role", "Community Member", "Technician", "Researcher", "NGO/Government"])
+        # user_role = st.selectbox("", ["Select Your Role", "Community Member", "Technician", "Researcher", "NGO/Government"])
+        user_role = st.selectbox("", ["Select Your Role", "Technician", "Researcher", "NGO/Government"])
         
         # Define Safe Thresholds
         safe_threshold_low = 0.2
         safe_threshold_high = 1.0
         
-        # Display for Community Member
-        if user_role == "Community Member":
-            last_fcr = df['FCR (mg/L)'].iloc[-1]
-            if last_fcr > safe_threshold_low and last_fcr < safe_threshold_high:
-                # st.markdown(f"<span style='color:green; font-size:24px;'>Safe</span>", unsafe_allow_html=True)
-                # Add Safe Water image to top center and subtitle underneath
-                st.image("safe_water.png", caption="Water is Safe", use_column_width=True)
+        # # Display for Community Member
+        # if user_role == "Community Member":
+        #     last_fcr = df['FCR (mg/L)'].iloc[-1]
+        #     if last_fcr > safe_threshold_low and last_fcr < safe_threshold_high:
+        #         # st.markdown(f"<span style='color:green; font-size:24px;'>Safe</span>", unsafe_allow_html=True)
+        #         # Add Safe Water image to top center and subtitle underneath
+        #         st.image("safe_water.png", caption="Water is Safe", use_column_width=True)
                 
-            else:
-                # st.markdown(f"<span style='color:red; font-size:24px;'>Unsafe</span>", unsafe_allow_html=True)
-                st.image("replaceimage.png", caption="Water is Unsafe", use_column_width=True)
+        #     else:
+        #         # st.markdown(f"<span style='color:red; font-size:24px;'>Unsafe</span>", unsafe_allow_html=True)
+        #         st.image("replaceimage.png", caption="Water is Unsafe", use_column_width=True)
         
         # Display for Technician
-        elif user_role == "Technician":
+        if user_role == "Technician":
             last_fcr = df['FCR (mg/L)'].iloc[-1]
             st.subheader("Current Chlorine Status")
             color = "green" if last_fcr > safe_threshold_low and last_fcr < safe_threshold_high else "red"
