@@ -120,7 +120,7 @@ if feeds and channel_info:
         # df['FCR (mg/L)'] = 10 ** df['log_FCR']  # Convert log(FCR) to FCR
         
         # User Role Selection
-        st.markdown("Tell Us About Yourself:")
+        st.markdown("Please select your current role")
         # user_role = st.selectbox("", ["Select Your Role", "Community Member", "Technician", "Researcher", "NGO/Government"])
         user_role = st.selectbox("", ["Select Your Role", "Technician", "Researcher", "NGO/Government"])
         
