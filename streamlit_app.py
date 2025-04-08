@@ -85,7 +85,7 @@ safe_logo_base64 = get_base64_of_bin_file(safe_water_path)
 unsafe_logo_base64 = get_base64_of_bin_file(unsafe_water_path)
 
 # Display in Streamlit
-st.title("🚰 Atlas Dashboard")
+st.title("Remote Chlorine Sensor Dashboard: Kenya")
 st.markdown("Welcome to your Atlas Dashboard from the *Pickering Lab*! Monitor real-time chlorine residual levels, ORP, pH, and temperature directly from your Atlas Device.")
 
 # Fetch and process data
