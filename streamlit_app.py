@@ -166,12 +166,7 @@ if feeds and channel_info:
         # Display the DataFrame
         print(df)
          
-        st.markdown("Please select your current role")
-        user_role = st.selectbox("", ["Select Your Role", "Technician", "Researcher", "NGO/Government"], key="role_selector_display")
-
-
-        if user_role == "Select Your Role":
-            st.stop() 
+        user_role = st.session_state.user_role
         
         # Calculate FCR using Van Haute's Model
         # df['log_FCR'] = df.apply(lambda row: van_haute_model(row['ORP (mV)'], row['pH']), axis=1)
