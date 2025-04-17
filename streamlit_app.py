@@ -46,7 +46,7 @@ selected_site = st.selectbox("Choose a data source", list(sensor_options.keys())
 
 if selected_site and not st.session_state.site_selected:
     st.session_state.site_selected = True
-    st.experimental_rerun()
+    st.rerun()
 
 # -----------------------------------------------------------------------------
 
@@ -61,7 +61,7 @@ if st.session_state.site_selected:
     if user_role != "Select Your Role" and not st.session_state.role_selected:
         st.session_state.role_selected = True
         st.session_state.user_role = user_role
-        st.experimental_rerun()
+        st.rerun()
 
 # -----------------------------------------------------------------------------
 
