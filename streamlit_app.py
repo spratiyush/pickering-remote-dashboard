@@ -166,7 +166,8 @@ if feeds and channel_info:
         # Display the DataFrame
         print(df)
          
-        user_role = st.session_state.user_role
+        user_role = st.session_state.get("user_role", "Select Your Role")
+
         
         # Calculate FCR using Van Haute's Model
         # df['log_FCR'] = df.apply(lambda row: van_haute_model(row['ORP (mV)'], row['pH']), axis=1)
