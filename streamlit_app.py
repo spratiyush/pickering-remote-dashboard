@@ -53,12 +53,16 @@ if selected_site and not st.session_state.site_selected:
 # -----------------------------------------------------------------------------
 
 if st.session_state.site_selected:
+    selected_site = st.session_state.selected_site
     CHANNEL_ID = sensor_options[selected_site]["channel_id"]
     READ_API_KEY = sensor_options[selected_site]["read_api_key"]
 
     st.markdown("### Please select your current role")
-    user_role = st.selectbox("",
-        ["Select Your Role", "Technician", "Researcher", "NGO/Government"])
+      user_role = st.selectbox(
+        "",
+        ["Select Your Role", "Technician", "Researcher", "NGO/Government"],
+        key="role_selector_initial" 
+    )
 
     if user_role != "Select Your Role" and not st.session_state.role_selected:
         st.session_state.role_selected = True
@@ -78,7 +82,7 @@ training_df = pd.read_csv('model_content/TuriTapFlow_Data_for_FR_Modeling.xlsx -
 # ThingSpeak API details
 #CHANNEL_ID = st.secrets["api_keys"]["channel_id"]
 #READ_API_KEY = st.secrets["api_keys"]["read_api_key"]
-NUM_RESULTS = 100  
+#NUM_RESULTS = 100  
 
 def fetch_thingspeak_data(channel_id, read_api_key, num_results):
     url = f"https://api.thingspeak.com/channels/{channel_id}/feeds.json"
@@ -163,11 +167,11 @@ if feeds and channel_info:
         # Display the DataFrame
         print(df)
          
-        st.markdown("Please select your current role")
-        user_role = st.selectbox("", ["Select Your Role", "Technician", "Researcher", "NGO/Government"])
+        #st.markdown("Please select your current role")
+        #user_role = st.selectbox("", ["Select Your Role", "Technician", "Researcher", "NGO/Government"])
 
-        if user_role == "Select Your Role":
-            st.stop() 
+        #if user_role == "Select Your Role":
+            #st.stop() 
         
         # Calculate FCR using Van Haute's Model
         # df['log_FCR'] = df.apply(lambda row: van_haute_model(row['ORP (mV)'], row['pH']), axis=1)
