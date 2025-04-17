@@ -167,7 +167,8 @@ if feeds and channel_info:
         print(df)
          
         st.markdown("Please select your current role")
-        user_role = st.selectbox("", ["Select Your Role", "Technician", "Researcher", "NGO/Government"])
+        user_role = st.selectbox("", ["Select Your Role", "Technician", "Researcher", "NGO/Government"], key="role_selector_display")
+
 
         if user_role == "Select Your Role":
             st.stop() 
