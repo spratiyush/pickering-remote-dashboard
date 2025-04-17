@@ -27,9 +27,6 @@ if "role_selected" not in st.session_state:
 
 # -----------------------------------------------------------------------------
 
-st.title("Remote Chlorine Sensor Dashboard: Kenya")
-st.markdown("Welcome to your Remote Chlorine Dashboard from the *Pickering Lab*! Monitor real-time chlorine residual levels, ORP, pH, and temperature directly from your Atlas Device.")
-
 st.subheader("Select Sensor Location")
 
 sensor_options = {
