@@ -292,4 +292,3 @@ if feeds and channel_info:
         st.error("The dataset does not contain ORP and pH readings required for FCR calculation.")
 else:
     st.error("Failed to load data from ThingSpeak.")
- hihglight in code what to edit to fix the error
