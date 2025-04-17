@@ -20,8 +20,15 @@ st.set_page_config(
 
 # -----------------------------------------------------------------------------
 
+if "site_selected" not in st.session_state:
+    st.session_state.site_selected = False
+if "role_selected" not in st.session_state:
+    st.session_state.role_selected = False
+
+# -----------------------------------------------------------------------------
 
 st.title("Remote Chlorine Sensor Dashboard: Kenya")
+st.markdown("Welcome to your Remote Chlorine Dashboard from the *Pickering Lab*! Monitor real-time chlorine residual levels, ORP, pH, and temperature directly from your Atlas Device.")
 
 st.subheader("Select Sensor Location")
 
@@ -42,9 +49,30 @@ sensor_options = {
 
 selected_site = st.selectbox("Choose a data source", list(sensor_options.keys()))
 
-if selected_site:
+if selected_site and not st.session_state.site_selected:
+    st.session_state.site_selected = True
+    st.experimental_rerun()
+
+# -----------------------------------------------------------------------------
+
+if st.session_state.site_selected:
     CHANNEL_ID = sensor_options[selected_site]["channel_id"]
     READ_API_KEY = sensor_options[selected_site]["read_api_key"]
+
+    st.markdown("### Please select your current role")
+    user_role = st.selectbox("",
+        ["Select Your Role", "Technician", "Researcher", "NGO/Government"])
+
+    if user_role != "Select Your Role" and not st.session_state.role_selected:
+        st.session_state.role_selected = True
+        st.session_state.user_role = user_role
+        st.experimental_rerun()
+
+# -----------------------------------------------------------------------------
+
+if st.session_state.site_selected and st.session_state.role_selected:
+    user_role = st.session_state.user_role
+    NUM_RESULTS = 100
 
 loaded_model = load('model_content/turitap_flow_random_forest_model.joblib')
 loaded_scaler = load('model_content/turitap_flow_scaler.joblib')
@@ -107,10 +135,6 @@ safe_water_path = "safe_water.png"
 unsafe_water_path = "replaceimage.png"
 safe_logo_base64 = get_base64_of_bin_file(safe_water_path)
 unsafe_logo_base64 = get_base64_of_bin_file(unsafe_water_path)
-
-# Display in Streamlit
-st.title("Remote Chlorine Sensor Dashboard: Kenya")
-st.markdown("Welcome to your Atlas Dashboard from the *Pickering Lab*! Monitor real-time chlorine residual levels, ORP, pH, and temperature directly from your Atlas Device.")
 
 # Fetch and process data
 feeds, channel_info = fetch_thingspeak_data(CHANNEL_ID, READ_API_KEY, NUM_RESULTS)
