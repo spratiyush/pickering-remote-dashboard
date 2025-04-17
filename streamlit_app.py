@@ -21,14 +21,35 @@ st.set_page_config(
 # -----------------------------------------------------------------------------
 
 
+st.title("Select Sensor Location")
+sensor_options = {
+    "Pickering Lab": {
+        "channel_id": st.secrets["api_keys"]["lab_channel_id"],
+        "read_api_key": st.secrets["api_keys"]["lab_read_api_key"]
+    },
+    "Kenya - Site 1": {
+        "channel_id": st.secrets["api_keys"]["kenya_1_channel_id"],
+        "read_api_key": st.secrets["api_keys"]["kenya_1_read_api_key"]
+    },
+    "Kenya - Site C": {
+        "channel_id": st.secrets["api_keys"]["kenya_2_channel_id"],
+        "read_api_key": st.secrets["api_keys"]["kenya_2_read_api_key"]
+    }
+}
+
+selected_site = st.selectbox("Choose a data source", list(sensor_options.keys()))
+
+if selected_site:
+    CHANNEL_ID = sensor_options[selected_site]["channel_id"]
+    READ_API_KEY = sensor_options[selected_site]["read_api_key"]
 
 loaded_model = load('model_content/turitap_flow_random_forest_model.joblib')
 loaded_scaler = load('model_content/turitap_flow_scaler.joblib')
 training_df = pd.read_csv('model_content/TuriTapFlow_Data_for_FR_Modeling.xlsx - 1_.25_.4_1.65_2.1_3.8_.7_.1_.18.csv')
 
 # ThingSpeak API details
-CHANNEL_ID = st.secrets["api_keys"]["channel_id"]
-READ_API_KEY = st.secrets["api_keys"]["read_api_key"]
+#CHANNEL_ID = st.secrets["api_keys"]["channel_id"]
+#READ_API_KEY = st.secrets["api_keys"]["read_api_key"]
 NUM_RESULTS = 100  
 
 def fetch_thingspeak_data(channel_id, read_api_key, num_results):
