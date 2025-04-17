@@ -27,6 +27,7 @@ if "role_selected" not in st.session_state:
 
 # -----------------------------------------------------------------------------
 
+st.title("Remote Chlorine Sensor Dashboard: Kenya")
 st.subheader("Select Sensor Location")
 
 sensor_options = {
@@ -47,6 +48,7 @@ sensor_options = {
 selected_site = st.selectbox("Choose a data source", list(sensor_options.keys()))
 
 if selected_site and not st.session_state.site_selected:
+    st.session_state.selected_site = selected_site
     st.session_state.site_selected = True
     st.experimental_rerun()
 
