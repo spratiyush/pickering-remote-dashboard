@@ -60,11 +60,10 @@ if st.session_state.site_selected:
     READ_API_KEY = sensor_options[selected_site]["read_api_key"]
 
     st.markdown("### Please select your current role")
-      user_role = st.selectbox(
-        "",
-        ["Select Your Role", "Technician", "Researcher", "NGO/Government"],
-        key="role_selector_initial" 
-    )
+    user_role = st.selectbox(
+         "",
+         ["Select Your Role", "Technician", "Researcher", "NGO/Government"],
+         key="role_selector_initial")
 
     if user_role != "Select Your Role" and not st.session_state.role_selected:
         st.session_state.role_selected = True
