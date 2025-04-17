@@ -21,7 +21,10 @@ st.set_page_config(
 # -----------------------------------------------------------------------------
 
 
-st.title("Select Sensor Location")
+st.title("Remote Chlorine Sensor Dashboard: Kenya")
+
+st.subheader("Select Sensor Location")
+
 sensor_options = {
     "Pickering Lab": {
         "channel_id": st.secrets["api_keys"]["lab_channel_id"],
@@ -31,7 +34,7 @@ sensor_options = {
         "channel_id": st.secrets["api_keys"]["kenya_1_channel_id"],
         "read_api_key": st.secrets["api_keys"]["kenya_1_read_api_key"]
     },
-    "Kenya - Site C": {
+    "Kenya - Site 2": {
         "channel_id": st.secrets["api_keys"]["kenya_2_channel_id"],
         "read_api_key": st.secrets["api_keys"]["kenya_2_read_api_key"]
     }
@@ -114,6 +117,10 @@ feeds, channel_info = fetch_thingspeak_data(CHANNEL_ID, READ_API_KEY, NUM_RESULT
 
 if feeds and channel_info:
     df = process_data(feeds, channel_info)
+
+
+
+
     print('these are df columns:', df.columns)
     print('these are trained_df columns:', training_df.columns)
 
@@ -134,16 +141,21 @@ if feeds and channel_info:
 
         # Display the DataFrame
         print(df)
-        
+         
+        st.markdown("Please select your current role")
+        user_role = st.selectbox("", ["Select Your Role", "Technician", "Researcher", "NGO/Government"])
+
+        if user_role == "Select Your Role":
+            st.stop() 
         
         # Calculate FCR using Van Haute's Model
         # df['log_FCR'] = df.apply(lambda row: van_haute_model(row['ORP (mV)'], row['pH']), axis=1)
         # df['FCR (mg/L)'] = 10 ** df['log_FCR']  # Convert log(FCR) to FCR
         
         # User Role Selection
-        st.markdown("Please select your current role")
+        #st.markdown("Please select your current role")
         # user_role = st.selectbox("", ["Select Your Role", "Community Member", "Technician", "Researcher", "NGO/Government"])
-        user_role = st.selectbox("", ["Select Your Role", "Technician", "Researcher", "NGO/Government"])
+        #user_role = st.selectbox("", ["Select Your Role", "Technician", "Researcher", "NGO/Government"])
         
         # Define Safe Thresholds
         safe_threshold_low = 0.2
