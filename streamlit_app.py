@@ -24,7 +24,7 @@ if "role_selected" not in st.session_state:
     st.session_state.role_selected = False
 
 # -----------------------------------------------------------------------------
-
+st.title("Remote Chlorine Sensor Dashboard: Kenya")
 st.subheader("Select Sensor Location")
 
 sensor_options = {
@@ -68,15 +68,14 @@ if st.session_state.site_selected:
 if st.session_state.site_selected and st.session_state.role_selected:
     user_role = st.session_state.user_role
     NUM_RESULTS = 100
-
-loaded_model = load('model_content/turitap_flow_random_forest_model.joblib')
-loaded_scaler = load('model_content/turitap_flow_scaler.joblib')
-training_df = pd.read_csv('model_content/TuriTapFlow_Data_for_FR_Modeling.xlsx - 1_.25_.4_1.65_2.1_3.8_.7_.1_.18.csv')
+    loaded_model = load('model_content/turitap_flow_random_forest_model.joblib')
+    loaded_scaler = load('model_content/turitap_flow_scaler.joblib')
+    training_df = pd.read_csv('model_content/TuriTapFlow_Data_for_FR_Modeling.xlsx - 1_.25_.4_1.65_2.1_3.8_.7_.1_.18.csv')
 
 # ThingSpeak API details
 #CHANNEL_ID = st.secrets["api_keys"]["channel_id"]
 #READ_API_KEY = st.secrets["api_keys"]["read_api_key"]
-NUM_RESULTS = 100  
+#NUM_RESULTS = 100  
 
 def fetch_thingspeak_data(channel_id, read_api_key, num_results):
     url = f"https://api.thingspeak.com/channels/{channel_id}/feeds.json"
