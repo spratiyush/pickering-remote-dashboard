@@ -58,7 +58,6 @@ if st.session_state.site_selected:
     selected_site = st.session_state.selected_site
     CHANNEL_ID = sensor_options[selected_site]["channel_id"]
     READ_API_KEY = sensor_options[selected_site]["read_api_key"]
-    NUM_RESULTS = 100
 
     st.markdown("### Please select your current role")
     user_role = st.selectbox(
